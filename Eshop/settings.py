@@ -133,8 +133,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = "/image/download/"
 MEDIA_ROOT = BASE_DIR
-RAZORPAY_API_KEY = 'rzp_test_Hvfb0VmJQbUQ4m'
-RAZORPAY_API_SECRET = 'gNXWArwdLKR4DNH9qt1soO8a'
+RAZORPAY_API_KEY = 'Your razorpay API'
+RAZORPAY_API_SECRET = 'Key secret'
 # settings.py
 # settings.py
 
