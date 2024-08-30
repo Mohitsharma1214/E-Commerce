@@ -154,9 +154,9 @@ EMAIL_PORT = 587  # Port for TLS (587 for TLS)
 EMAIL_USE_TLS = True  # Enable TLS (secure connection) for SMTP
 
 # Your Gmail username and password
-EMAIL_HOST_USER = 'ptms2525'  # Your Gmail email address
-EMAIL_HOST_PASSWORD = 'qqsw spnt zwpd wnoo'  # Your Gmail password
+EMAIL_HOST_USER = ''  # Your Gmail email address
+EMAIL_HOST_PASSWORD = ''  # Your Gmail password
 
 # Default sender email address
-DEFAULT_FROM_EMAIL = 'ptms2525@gmail.com'  # Your Gmail email address
+DEFAULT_FROM_EMAIL = ''  # Your Gmail email address
 TIME_ZONE = 'Asia/Kolkata'
