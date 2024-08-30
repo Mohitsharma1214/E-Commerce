@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load cart %}
+{% load custom_filter %}
+<style>
+a{
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: underline;
+}
+</style>
+<div class="container">
+    <div class="border rounded p-4 m-4">
+        <p class="display-4 pl-4 ml-4 text-center">Your Orders</p>
+        <hr>
+        <!-- Sorting form -->
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <form id="sort-form" method="get" class="mb-4 text-center" style="max-width: 400px;">
+                    <div class="form-group">
+                        <label for="sort-option">Sort by:</label>
+                        <select name="sort_option" id="sort-option" class="form-control mx-auto">
+                            <option value="date_desc">Date (Newest First)</option>
+                            <option value="date_asc">Date (Oldest First)</option>
+                            {% for option_key, option_label in payment_status_options %}
+                            <option value="{{ option_key }}">{{ option_label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="show-all-items" name="show_all_items">
+                        <label class="form-check-label" for="show-all-items">
+                            Show all items
+                        </label>
+                    </div>
+                    <button type="submit" class="btn" style="color: white; background-color: rgb(36, 34, 34);">Sort</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            {% if orders %}
+            {% for order in orders %}
+            <div class="col-12 col-md-6 col-lg-4 mb-5">
+                <div class="card h-100">
+                    <img src="{{ order.product.image.url }}" class="card-img-top" alt="{{ order.product.name }}">
+                    <div class="card-body text-center">
+                        <div class="product-name">
+                            <a href="{% url 'product-detail' order.product.id %}" style="color: black;">{{ order.product.name }}</a>
+                        </div>
+                        <br>
+                        <p class="card-text">Date: {{ order.created_at }}</p>
+                        <p class="card-text">Price: {{ order.price|currency }}</p>
+                        <p class="card-text">Quantity: {{ order.quantity }}</p>
+                        <p class="card-text">Size: {{ order.size }}</p>
+                        <p class="card-text">Total: {{ order.quantity|multiply:order.price|currency }}</p>
+                        <!-- Display status badge -->
+                        {% if order.status == 'Pending' %}
+                        <span class="badge badge-warning">{{ order.status }}</span>
+                        {% elif order.status == 'Processing' %}
+                        <span class="badge badge-info">{{ order.status }}</span>
+                        {% elif order.status == 'Shipped' %}
+                        <span class="badge badge-primary">{{ order.status }}</span>
+                        <span class="badge badge-info">{{ order.status }}</span>
+                        {% elif order.status == 'Out for Delievery' %}
+                        <span class="badge badge-secondary">{{ order.status }}</span>
+                        {% elif order.status == 'Delivered' %}
+                        <span class="badge badge-success">{{ order.status }}</span>
+                        {% elif order.status == 'Cancelled' %}
+                        <span class="badge badge-danger">{{ order.status }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="col-12">
+                <p>No orders available.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+<!-- Include jQuery -->
+<!-- Include jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- Your AJAX script -->
+<script>
+$(document).ready(function() {
+    // Submit the form using AJAX to sort orders without page refresh
+    $('#sort-form').submit(function (e) {
+        e.preventDefault();
+        var form = $(this);
+        $.ajax({
+            type: form.attr('method'),
+            url: form.attr('action'),
+            data: form.serialize(),
+            success: function (data) {
+                // Replace the current content with sorted orders
+                $('#content').html(data);
+            }
+        });
+    });
+});
+</script>

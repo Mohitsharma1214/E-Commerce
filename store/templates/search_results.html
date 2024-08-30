@@ -1,0 +1,444 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load cart %}
+{% load custom_filter %}
+<style>
+   
+
+    .fade-in {
+          animation: fadeIn 0.5s ease-out; /* Adjust the animation duration and timing function as needed */
+      }
+  
+      @keyframes fadeIn {
+          from {
+              opacity: 0;
+              transform: translateY(-20px); /* Start from 20px above */
+          }
+          to {
+              opacity: 1;
+              transform: translateY(0); /* Fade in and move down */
+          }
+      }
+  
+      /* Custom CSS styles for the close button */
+      .message-box {
+          position: fixed;
+          top: 90px;
+          right: 20px;
+          color: #ccc;
+          background-color: black;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          padding: 10px 20px;
+          border-radius: 5px;
+          z-index: 999;
+          animation: fadeIn 0.5s ease-out;
+      }
+  
+      .btn-close {
+          position: absolute;
+          top: 5px;
+          right: 5px;
+          background-color: white;
+      }
+  
+      .loader-bar {
+          width: 100%;
+          height: 5px;
+          background-color: #ccc;
+          position: relative;
+          border-radius: 5px;
+          margin-top: 5px;
+      }
+  
+      .loader-progress {
+          width: 100%;
+          height: 100%;
+          background-color: #007bff;
+          border-radius: 5px;
+          position: absolute;
+          top: 0;
+          left: 0;
+      }
+  
+  
+      .quantity-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(77, 72, 72);
+    padding: 10px; /* Adjust padding as needed */
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 300px; /* Adjust the width as needed */
+    height: auto; /* Ensure the height adjusts according to content */
+}
+
+
+.quantity-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(77, 72, 72);
+    padding: 0px 10px; /* Adjust padding as needed */
+    border-radius: 5px;
+    
+}
+
+
+.quantity-button {
+    border: none; /* Remove button border */
+    cursor: pointer; /* Add pointer cursor */
+    background-color: transparent;
+    color: white;
+    font-size: 20px; /* Adjust font size as needed */
+    padding: 5px 10px; /* Adjust padding as needed */
+}
+
+
+.quantity-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.quantity {
+    color: white;
+    font-weight: bold;
+}
+
+.quantity-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out; /* Adjust the animation duration and timing function as needed */
+    opacity: 1; /* Ensure elements are visible after animation */
+    visibility: visible; /* Ensure elements are visible after animation */
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out; /* Add transition properties */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px); /* Start from 20px above */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* Fade in and move down */
+    }
+}
+/* Add animation for card elements */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeInUp 0.5s ease-out; /* Apply animation to the card elements */
+    transition: transform 0.3s ease; 
+    margin-left: 1em;/* Add transition for smoother hover effect */
+}
+
+.card img {
+    transition: transform 0.3s ease; /* Apply transition to the transform property */
+}
+
+.card:hover img {
+    transform: scale(1.05); /* Scale up the image on hover */
+}
+@media (max-width: 345px) {
+    .mx-auto {
+    margin-right: auto !important;
+    margin-left: .5em !important;
+}        body {
+    overflow-x: hidden; /* Hide scrollbar */
+}
+.btncart{
+    margin-top: 1em;
+}
+
+    }
+
+
+    
+    @media (max-width: 767px) {
+
+.btncart{
+    margin-top: .7em;
+    margin-left: .7em;
+}
+.btndet{
+    margin-left: 2em;
+}
+    }
+
+    
+    @media (min-width: 992px) {
+
+.btncart{
+    margin-top: -.1em;
+    width: 7.5em;
+}
+.btndet{
+    margin-left: -1em;
+}
+    }    
+    .btn:not(:disabled):not(.disabled) {
+    cursor: pointer;
+    /* margin: 1em; */
+} 
+/* footer{
+    margin-left: -12px;
+    margin-right: -20px;
+    width: 120%;
+} */
+/* Style for the container */
+
+
+/* Style for the card title */
+.card-title {
+    font-size: 1.25rem; /* Adjust font size as needed */
+    margin-bottom: 0.75rem; /* Adjust margin bottom as needed */
+}
+
+/* Style for the regular price */
+.regular-price {
+    color: #333; /* Adjust color as needed */
+}
+
+/* Style for the deleted price */
+.deleted-price {
+    color: #999; /* Adjust color as needed */
+}
+
+/* Style for the "View Details" button */
+.btn {
+    display: inline-block;
+    background-color: rgb(36, 34, 34);
+    color: white;
+    padding: 0.375rem 0.75rem; /* Adjust padding as needed */
+    border: none;
+    border-radius: 0.25rem; /* Adjust border radius as needed */
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #222; /* Adjust hover background color as needed */
+}
+
+/* Style for the "Already in Cart" text */
+p {
+    font-size: 0.875rem; /* Adjust font size as needed */
+}
+
+/* Style for the link within "Already in Cart" text */
+p a {
+    color: blue; /* Adjust color as needed */
+}
+
+p a:hover {
+    text-decoration: underline; /* Adjust hover effect as needed */
+}
+
+/* Style for the container holding the product cards */
+#products {
+    margin-top: 20px; /* Adjust margin top as needed */
+}
+
+/* Style for each product card */
+.card {
+    margin-bottom: 20px; /* Adjust margin bottom as needed */
+}
+
+/* Style for the image inside the product card */
+.card-img-top {
+    max-height: 150px; /* Adjust max height as needed */
+}
+
+/* Style for the card body */
+.card-body {
+    max-height: 180px; /* Adjust max height as needed */
+    overflow: hidden; /* Hide overflow content */
+}
+/* Style for the container holding the "New Drops" section */
+.new-drops-container {
+    margin-top: 50px; /* Adjust margin top as needed */
+}
+
+/* Style for each card in the "New Drops" section */
+.new-drop-card {
+    margin-bottom: 20px; /* Adjust margin bottom as needed */
+}
+
+/* Style for the image inside the "New Drops" card */
+.new-drop-img-top {
+    max-height: 150px; /* Adjust max height as needed */
+}
+
+/* Style for the card body of "New Drops" cards */
+.new-drop-card-body {
+    max-height: 180px; /* Adjust max height as needed */
+    overflow: hidden; /* Hide overflow content */
+}
+.mb-4{
+    text-align: center;
+    margin: 1.6rem;
+}
+
+.row {
+    width: 100%;
+}
+.card-body {
+    max-height: 223px;
+    overflow: hidden;
+}
+
+.container {
+    margin-top: -3px;
+}
+@media (min-width: 992px) {
+        .center-cards {
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+
+    
+    .row {
+    width: 100%;
+    justify-content: space-around;
+    justify-content: space-between;
+}   img.card-img-top {
+    border: 1px solid black;
+    border-radius: 3px;
+} 
+.carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    filter: invert(100%); /* Invert the color of the image to make it black */
+  }
+  .carousel-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8); /* Change the background color to black */
+    color: #000; /* Change the text color to black */
+}
+
+.carousel-caption h5,
+.carousel-caption p {
+    margin: 0;
+}
+img.card-img-top {
+    border: 1px solid black;
+    border-radius: 3px;
+    width: 10em;
+}
+
+.card {
+    margin-bottom: 20px;
+    margin-left: 1.5em;
+}
+#search-form1 {
+        max-width: 400px; /* Adjust the max-width as needed */
+        margin: 0 auto; /* Center the form horizontally */
+    }
+
+    #search-input {
+        flex: 1; /* Let the input field grow to fill the available space */
+    }
+
+    #search-button1 {
+        width: 40px; /* Adjust the width of the button */
+    }
+  </style>
+ <div class="search-form-container">
+    <!-- Search Form -->
+    <form class="d-flex" id="search-form1" action="{% url 'search' %}" method="GET" role="search">
+        <input id="search-input1" class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit" style="color: white; background-color: rgb(50, 49, 49);">
+            <!-- Search Icon SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M 10 4 C 5.581722 4 2 7.581722 2 12 C 2 16.418278 5.581722 20 10 20 C 11.766917 20 13.387358 19.367175 14.636719 18.314453 L 19.292969 22.970703 A 0.999986 0.999986 0 1 0 20.707031 21.556641 L 16.050781 16.900391 C 17.102004 15.65103 17.734829 14.030589 17.734375 12.263672 C 17.733899 7.8443493 14.152523 4.2630242 9.7333984 4.2636719 C 9.238281 4.2636719 8.7536711 4.3263558 8.2929688 4.4492188 A 8.1465 8.1465 0 0 0 5.5644531 2.6367188 A 1.000134 1.000134 0 0 0 4.2421875 4.1210938 A 10.15925 10.15925 0 0 1 10 4 z M 10 6 A 6 6 0 0 1 10 18 A 6 6 0 0 1 10 6 z"/>
+            </svg>
+        </button>
+    </form>
+    <!-- Suggestions List -->
+    <ul id="suggestions-list" class="list-group"></ul>
+</div>
+
+    {% if query %}
+        <h3 class="text-center mb-4">Search results for "{{ query }}":</h3>
+        {% if results %}
+            <div class="container">
+                <div class="row justify-content-center">
+                    {% for product in results %}
+                        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                            <div class="card h-100">
+                                <a href="{% url 'product-detail' product.id %}" style="color: black;">
+                                    <img class="card-img-top" src="{{ product.image.url }}" alt="Product Image" style="max-height: 200px;">
+                                </a>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ product.name }}</h5>
+                                    <p class="card-text">
+                                        <span class="deleted-price"><del>{{ product.deleted_price|currency }}</del></span>
+                                        <span class="regular-price">{{ product.price|currency }}</span>
+                                    </p>
+                                    <a href="{% url 'product-detail' product.id %}" class="btn btn-dark">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <div class="container text-center">
+                <p>No results found for "{{ query }}". Check the spelling or use a different word or phrase.</p>
+            </div>
+        {% endif %}
+    {% endif %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function getSuggestions(input) {
+        $.ajax({
+            url: "{% url 'search' %}",
+            data: { 'q': input },
+            dataType: 'json',
+            success: function(response) {
+                var suggestions = response.suggestions;
+                var suggestionsList = $("#suggestions-list");
+                suggestionsList.empty(); // Clear previous suggestions
+                if (input.length > 0 && suggestions.length > 0) {
+                    $.each(suggestions, function(index, suggestion) {
+                        // Create a link for each suggestion
+                        var suggestionLink = $("<a>").attr("href", "{% url 'search' %}?q=" + suggestion).addClass("list-group-item").text(suggestion);
+                        suggestionsList.append(suggestionLink);
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText); // Log error message
+            }
+        });
+    }
+
+    // Event listener for input field
+    $("#search-input").on("input", function() {
+        var inputValue = $(this).val();
+        if (inputValue.length > 0) {
+            getSuggestions(inputValue);
+        } else {
+            $("#suggestions-list").empty(); // Clear suggestions if input is empty
+        }
+    });
+
+    </script>
+{% endblock %}

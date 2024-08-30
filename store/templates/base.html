@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+        <link rel="icon" href="/static/images/android-chrome-512x512.png" type="image/x-icon" style="color:#ffffff; background-color:#ffffff; display:standalone; width: 1000px;">
+        
+
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Bootstrap CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap JS (bundle includes Popper.js) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+
+    <title>TeArt </title>
+
+    <style>
+        body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+footer {
+    margin-top: auto;
+}
+
+         body {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+
+        nav {
+            background-color: #f8f9fa;
+        }
+
+        .one-edge-shadow {
+            box-shadow: 0 8px 2px -5px rgb(246, 245, 245);
+        }
+
+       
+
+        .transparent-input::placeholder {
+    color: #a6a0a0; /* Placeholder color */
+}
+
+.transparent-input:focus {
+    outline: none;
+    box-shadow: none;
+}
+/* Slideshow container styles */
+.slideshow-container1 {
+  position: relative;
+  max-width: 100%;
+  margin-top: 20px; /* Adjust as needed */
+}
+
+/* Slide styles */
+.slide {
+  display: none;
+  animation: fade 1.5s;
+}
+
+/* Text styles */
+.text {
+  color: white;
+  font-size: 24px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+/* Animation for fading slides */
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.slideshow-container1 {
+    width: 100%;
+        position: relative;
+        margin: auto;
+        color: black;
+}
+
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    padding: 16px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    transition: 0.6s ease;
+    user-select: none;
+   
+    border-radius: 0 3px 3px 0;
+}
+
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.text {
+        color: black;
+        background-color: white;
+        /* Set initial width */
+        width: 50%;
+        /* Center text */
+        margin: 0 auto;
+        /* Add padding and margin */
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    /* Media query for smaller devices */
+    @media (max-width: 768px) {
+        .text {
+            /* Decrease width for smaller devices */
+            width: 80%;
+        }
+    }
+    .link-no-underline {
+    text-decoration: none;
+}
+
+.link-no-underline:hover {
+    text-decoration: underline;
+}
+.custom-input1 {
+        border: 1px solid white;
+        background-color: transparent;
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        width: 100%; /* Adjust the width as needed */
+        margin-bottom: 10px; 
+        margin-left: 1em;
+        text-align: center;/* Optional: Add some space below the input */
+    }
+    /* Adjust the position of the buttons */
+.prev {
+    left: 10px; /* Decrease space from left side */
+}
+
+.next {
+    right: 10px; /* Decrease space from right side */
+}
+.row{
+    width: 93%;
+}
+.subscription-message{
+margin-left: 2.4em;
+margin-top: .5em;
+}
+.nav-link{
+    color:black;
+}
+
+#preloader {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background-color: #fff; /* Change background color as needed */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Customize the preloader animation */
+    .preloader-spinner {
+        border: 8px solid #f3f3f3; /* Light grey */
+        border-top: 8px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+        /* Media queries for different device widths */
+    @media (max-width: 576px) {
+        .modal-dialog {
+            max-width: 100%;
+        }
+    }
+    /* Custom CSS to open dropdown on hover */
+#hover-dropdown:hover .dropdown-menu {
+    display: block;
+}
+/* Custom CSS to open dropdown on hover */
+/* Custom CSS to open dropdown on hover */
+#profileDropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/* Ensure dropdown is hidden by default */
+.dropdown-menu {
+    display: none;
+} 
+.btn {
+    transition: transform 0.5s ease; /* Increased duration to 0.5s */
+  }
+  
+  .btn:hover {
+    transform: rotate(5deg);
+  }
+    </style>
+    <!-- Your code -->
+    
+</head>
+
+<body>
+    <div id="preloader">
+        <div class="preloader-spinner"></div>
+    </div>
+    
+    <nav class="navbar bg-body-tertiary fixed-top">
+        <div class="container-fluid"  >
+           
+            
+                
+            <!-- Offcanvas Navbar Brand -->
+            <a class="navbar-brand mx-auto" href="/">
+                <img src="/static/images/TeArt.svg" alt="TeArt Logo" style="width: 75px; height: 75px; margin-bottom: -1.6em; margin-top: -1.4em; ">
+            </a>
+       
+            
+            <!-- Cart Icon -->
+            <a class="navbar-brand d-flex align-items-center order-lg-first" href="/cart">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                version="1.1" width="30" height="30" viewBox="0 0 256 256"
+                xml:space="preserve">
+    
+                <defs>
+                </defs>
+                <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;"
+                    transform="translate(254.59340659340654 254.59340659340654) rotate(180) scale(2.81 2.81) matrix(1 0 0 -1 0 90)">
+                    <path
+                        d="M 78.116 54.894 H 23.524 c -0.552 0 -1 -0.447 -1 -1 s 0.448 -1 1 -1 h 54.592 c 1.824 0 3.459 -1.222 3.977 -2.971 l 5.809 -19.65 c 0.21 -0.709 0.076 -1.456 -0.366 -2.048 c -0.442 -0.593 -1.121 -0.933 -1.861 -0.933 H 71.782 c -0.553 0 -1 -0.448 -1 -1 c 0 -0.552 0.447 -1 1 -1 h 13.891 c 1.377 0 2.64 0.633 3.464 1.736 c 0.823 1.103 1.072 2.493 0.682 3.812 L 84.011 50.49 C 83.244 53.084 80.82 54.894 78.116 54.894 z"
+                        style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
+                        transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                    <path
+                        d="M 31.735 27.293 H 16.356 c -0.552 0 -1 -0.448 -1 -1 c 0 -0.552 0.448 -1 1 -1 h 15.379 c 0.552 0 1 0.448 1 1 C 32.735 26.845 32.288 27.293 31.735 27.293 z"
+                        style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
+                        transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                    <path
+                        d="M 78.642 66.127 H 26.441 c -0.456 0 -0.854 -0.308 -0.968 -0.749 L 14.307 22.383 c -0.476 -1.831 -2.129 -3.11 -4.021 -3.11 H 1 c -0.552 0 -1 -0.448 -1 -1 c 0 -0.552 0.448 -1 1 -1 h 9.287 c 2.803 0 5.252 1.895 5.956 4.607 l 10.971 42.247 h 51.428 c 0.553 0 1 0.447 1 1 S 79.194 66.127 78.642 66.127 z"
+                        style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
+                        transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                    <path
+                        d="M 35.47 83.934 c -3.762 0 -6.822 -3.061 -6.822 -6.822 s 3.061 -6.822 6.822 -6.822 c 3.762 0 6.823 3.061 6.823 6.822 S 39.232 83.934 35.47 83.934 z M 35.47 72.29 c -2.659 0 -4.822 2.163 -4.822 4.822 c 0 2.659 2.163 4.822 4.822 4.822 s 4.823 -2.163 4.823 -4.822 C 40.293 74.453 38.129 72.29 35.47 72.29 z"
+                        style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
+                        transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                    <path
+                        d="M 68.27 83.934 c -3.762 0 -6.822 -3.061 -6.822 -6.822 s 3.061 -6.822 6.822 -6.822 c 3.763 0 6.823 3.061 6.823 6.822 S 72.032 83.934 68.27 83.934 z M 68.27 72.29 c -2.659 0 -4.822 2.163 -4.822 4.822 c 0 2.659 2.163 4.822 4.822 4.822 c 2.659 0 4.823 -2.163 4.823 -4.822 C 73.093 74.453 70.929 72.29 68.27 72.29 z"
+                        style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
+                        transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                    <path
+                        d="M 52.063 38.446 l -0.487 -0.271 c -3.791 -2.115 -9.698 -7.086 -12.154 -10.229 c -5.174 -6.624 -6.25 -14.46 -2.557 -18.632 c 1.767 -1.996 4.247 -3.146 6.985 -3.241 c 2.893 -0.105 5.773 1.001 8.213 3.115 c 2.44 -2.116 5.34 -3.218 8.212 -3.115 c 2.738 0.095 5.219 1.246 6.985 3.241 l 0 0 c 3.692 4.171 2.617 12.007 -2.557 18.632 c -2.457 3.144 -8.363 8.115 -12.153 10.229 L 52.063 38.446 z M 44.21 8.066 c -0.097 0 -0.194 0.002 -0.292 0.005 c -2.184 0.076 -4.157 0.988 -5.556 2.568 c -3.004 3.395 -1.872 10.306 2.636 16.075 c 2.184 2.795 7.503 7.311 11.065 9.432 c 3.561 -2.121 8.88 -6.637 11.064 -9.432 c 4.581 -5.864 5.689 -12.625 2.635 -16.075 l 0 0 c -1.398 -1.58 -3.372 -2.492 -5.556 -2.568 c -2.646 -0.091 -5.26 1.043 -7.442 3.19 l -0.701 0.69 l -0.701 -0.69 C 49.259 9.194 46.73 8.066 44.21 8.066 z"
+                        style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
+                        transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                </g>
+            </svg>
+
+            <span class="badge badge-success" style="padding: 8px; background-color: black;" id="cart-count">{{ request.session.cart.keys|length }}</span>
+           
+
+            <span class="sr-only">(current)</span></a>
+            <!-- Toggle Icon -->
+             <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#searchModal"  >
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 24 24" style="margin-right: 1em;">
+                    <path d="M 10 4 C 5.581722 4 2 7.581722 2 12 C 2 16.418278 5.581722 20 10 20 C 11.766917 20 13.387358 19.367175 14.636719 18.314453 L 19.292969 22.970703 A 0.999986 0.999986 0 1 0 20.707031 21.556641 L 16.050781 16.900391 C 17.102004 15.65103 17.734829 14.030589 17.734375 12.263672 C 17.733899 7.8443493 14.152523 4.2630242 9.7333984 4.2636719 C 9.238281 4.2636719 8.7536711 4.3263558 8.2929688 4.4492188 A 8.1465 8.1465 0 0 0 5.5644531 2.6367188 A 1.000134 1.000134 0 0 0 4.2421875 4.1210938 A 10.15925 10.15925 0 0 1 10 4 z M 10 6 A 6 6 0 0 1 10 18 A 6 6 0 0 1 10 6 z"/>
+                </svg>
+            </a>
+            <button class="navbar-toggler order-lg-last" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <img src="/static/images/TeArt.svg" alt="TeArt Logo" style="width: 90px; height: 90px; margin-left: -1.5em;  margin-bottom: -2em; margin-top: -1em;">
+                    <img src="/static/images/TeArt_text.svg" alt="TeArt Logo" style="width: 250px; height: 250px; margin-left: -1.5em;  margin-bottom:-30em; margin-top: -29em; margin-right: -4em;">
+
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <hr>
+                <div class="offcanvas-body">
+                    <!-- Your existing navbar content goes here -->
+                   
+                    
+                    <!-- Additional content from the second navbar -->
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/">Store <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item dropdown" id="hover-dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                Categories
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <!-- Populate categories dynamically -->
+                                {% for category in categories %}
+                                    <a class="dropdown-item" href="/?category={{category.id}}" >{{ category.name }}</a>
+                                {% endfor %}
+                            </div>
+                        </li>
+                        
+                        
+                    </ul>
+    
+                    <!-- Profile Dropdown -->
+                    <ul class="navbar-nav">
+                        {% if request.session.customer %}
+                        <li id="profileDropdown" class="nav-item active dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" aria-haspopup="true" aria-expanded="false">
+                                Profile
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="/customer/profile/">Your Profile <span class="sr-only">(current)</span></a>
+                                <a class="dropdown-item" href="/orders">Order History<span class="sr-only">(current)</span> </a>
+                                <a class="dropdown-item" href="/logout">Logout<span class="sr-only">(current)</span> </a>
+                            </div>
+                        </li>
+                        
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/contact/">Contact <span class="sr-only">(current)</span></a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/signup">Signup<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/login">Login<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/contact/" >Contact <span class="sr-only">(current)</span></a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    
+                    
+                    
+                    
+                </div>
+                <hr>
+                <div class="mt-3 ms-auto">
+                    <a href="https://www.instagram.com/mohitsharmas_">
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50" style="margin-bottom:1em; margin-right:1em;">
+                            <path d="M 16 3 C 8.8324839 3 3 8.8324839 3 16 L 3 34 C 3 41.167516 8.8324839 47 16 47 L 34 47 C 41.167516 47 47 41.167516 47 34 L 47 16 C 47 8.8324839 41.167516 3 34 3 L 16 3 z M 16 5 L 34 5 C 40.086484 5 45 9.9135161 45 16 L 45 34 C 45 40.086484 40.086484 45 34 45 L 16 45 C 9.9135161 45 5 40.086484 5 34 L 5 16 C 5 9.9135161 9.9135161 5 16 5 z M 37 11 A 2 2 0 0 0 35 13 A 2 2 0 0 0 37 15 A 2 2 0 0 0 39 13 A 2 2 0 0 0 37 11 z M 25 14 C 18.936712 14 14 18.936712 14 25 C 14 31.063288 18.936712 36 25 36 C 31.063288 36 36 31.063288 36 25 C 36 18.936712 31.063288 14 25 14 z M 25 16 C 29.982407 16 34 20.017593 34 25 C 34 29.982407 29.982407 34 25 34 C 20.017593 34 16 29.982407 16 25 C 16 20.017593 20.017593 16 25 16 z"></path>
+                        </svg>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+       
+    </nav>
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-top modal-xl">
+            <div class="modal-content" style="margin-top: 0; width: 100%; max-height: 50vh;">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Search Form -->
+                    <form class="d-flex" id="search-form" action="{% url 'search' %}" method="GET" role="search">
+                        <input id="search-input" class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit" style="color: white; background-color: rgb(50, 49, 49);">
+                            <!-- Search Icon SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M 10 4 C 5.581722 4 2 7.581722 2 12 C 2 16.418278 5.581722 20 10 20 C 11.766917 20 13.387358 19.367175 14.636719 18.314453 L 19.292969 22.970703 A 0.999986 0.999986 0 1 0 20.707031 21.556641 L 16.050781 16.900391 C 17.102004 15.65103 17.734829 14.030589 17.734375 12.263672 C 17.733899 7.8443493 14.152523 4.2630242 9.7333984 4.2636719 C 9.238281 4.2636719 8.7536711 4.3263558 8.2929688 4.4492188 A 8.1465 8.1465 0 0 0 5.5644531 2.6367188 A 1.000134 1.000134 0 0 0 4.2421875 4.1210938 A 10.15925 10.15925 0 0 1 10 4 z M 10 6 A 6 6 0 0 1 10 18 A 6 6 0 0 1 10 6 z"/>
+                            </svg>
+                        </button>
+                    </form>
+                    <!-- Suggestions List -->
+                    <ul id="suggestions-list" class="list-group"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <br><br>
+    <br>
+<br>
+    <br>
+    <div class="slideshow-container1">
+        <!-- Text and slides -->
+        <div class="slide slide-left slide1">
+            <div class="text"><b>Welcome to our store</b></div>
+        </div>
+        
+        <div class="slide slide-left slide1">
+            <div class="text"><b>UPTO 50% OFF TODAY</b></div>
+        </div>
+    
+        <!-- Buttons for controlling slides -->
+        <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
+        <a class="next" onclick="changeSlide(1)">&#10095;</a>
+    </div>
+<br>
+
+<hr>
+    
+    {% block content %}
+    
+    {% endblock %}
+    
+<!-- Footer -->
+<!-- Footer -->
+<hr>
+<footer class="bg-dark text-white py-4" style="width: 100%; bottom: 0;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 text-center">
+                <!-- Email subscription form -->
+                <h5 class="mb-3" style="margin-left: 1.7em;">For All The Updates! Join Our Email</h5>
+                <form id="subscriptionForm" class="custom-form" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="email" id="emailInput" name="email" class="custom-input1" aria-describedby="emailHelp" placeholder="Enter your email" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="margin-left: 3em; color: white; background-color: rgb(62, 62, 62);">
+                        Subscribe
+                      </button>
+                </form>
+                <div id="subscription-message" class="subscription-message" ></div>
+                
+            </div>
+            
+        </div>
+        <!-- Divider line -->
+        <hr>
+        <div class="row">
+            <div class="col-md-12 mt-3 text-center">
+                <!-- Copyright and policies -->
+                <div class="d-flex justify-content-center align-items-center flex-wrap">
+                    <p class="mb-0">&copy; 2024, <a href="/" class="text-white link-no-underline">TeArt</a> Powered by Shyamproductions</p>
+                    <div class="ml-3">
+                        <a href="/policies/refund-policy" class="text-white link-no-underline">Refund policy</a>
+                        <span class="mx-2">|</span>
+                        <a href="/policies/privacy-policy" class="text-white link-no-underline">Privacy policy</a>
+                        <span class="mx-2">|</span>
+                        <a href="/policies/termsofservice" class="text-white link-no-underline">Terms of service</a>
+                        <span class="mx-2">|</span>
+                        <a href="/policies/shipping-policy" class="text-white link-no-underline">Shipping policy</a>
+                        <span class="mx-2">|</span>
+                        <a href="/policies/contact-info" class="text-white link-no-underline">Contact information</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+ $(document).ready(function () {
+            var hoverTimeout;
+            $('#profileDropdown').hover(function () {
+                // Set a timeout for 2 seconds
+                hoverTimeout = setTimeout(function () {
+                    $('.dropdown-content').css('display', 'block');
+                }, 2000);
+            }, function () {
+                // Clear the timeout if mouse leaves before 2 seconds
+                clearTimeout(hoverTimeout);
+                $('.dropdown-content').css('display', 'none');
+            });
+        });
+
+
+
+    var slideIndex = 0;
+showSlides();
+
+function showSlides() {
+    var i;
+    var slides = document.getElementsByClassName("slide1");
+    for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+    }
+    slideIndex++;
+    if (slideIndex > slides.length) { slideIndex = 1 }
+    slides[slideIndex - 1].style.display = "block";
+    setTimeout(showSlides, 2000); // Change slide every 3 seconds
+}
+
+// Function to change slide manually
+function changeSlide(n) {
+    slideIndex += n;
+    showSlides();
+}
+
+    // Close button click event
+        $("#closeButton").click(function () {
+            $(".navbar-collapse").collapse('hide');
+            $("#closeButton").hide();
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            var subscriptionForm = document.getElementById('subscriptionForm');
+            if (subscriptionForm) {
+                subscriptionForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    var emailInput = document.getElementById('emailInput');
+                    if (emailInput) {
+                        var email = emailInput.value;
+                        var formData = new FormData();
+                        formData.append('email', email);
+
+                        fetch('/subscribe/', {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            var messageDiv = document.getElementById('subscription-message');
+                            if (data.error) {
+                                messageDiv.innerHTML = '<p style="color: red;">' + data.error + '</p>';
+                            } else if (data.message) {
+                                messageDiv.innerHTML = '<p style="color: green;">' + data.message + '</p>';
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                    } else {
+                        console.error('Email input element not found.');
+                    }
+                });
+            } else {
+                console.error('Subscription form element not found.');
+            }
+        });
+        window.addEventListener('load', function () {
+        var preloader = document.getElementById('preloader');
+        // Hide the preloader
+        preloader.style.display = 'none';
+    });
+    function getSuggestions(input) {
+        $.ajax({
+            url: "{% url 'search' %}",
+            data: { 'q': input },
+            dataType: 'json',
+            success: function(response) {
+                var suggestions = response.suggestions;
+                var suggestionsList = $("#suggestions-list");
+                suggestionsList.empty(); // Clear previous suggestions
+                if (input.length > 0) {
+                    $.each(suggestions, function(index, suggestion) {
+                        // Create a link for each suggestion
+                        var suggestionLink = $("<a>").attr("href", "{% url 'search' %}?q=" + suggestion).addClass("list-group-item").text(suggestion);
+                        suggestionsList.append(suggestionLink);
+                    });
+                }
+            }
+        });
+    }
+
+    // Event listener for input field
+    $("#search-input").on("input", function() {
+        var inputValue = $(this).val();
+        if (inputValue.length > 0) {
+            getSuggestions(inputValue);
+        } else {
+            $("#suggestions-list").empty(); // Clear suggestions if input is empty
+        }
+    });
+
+    function updateCartCount() {
+        $.get("/cart/count/", function(data) {
+            $("#cart-count").text(data.count);
+        });
+    }
+
+    // Call updateCartCount initially
+    updateCartCount();
+
+    // Intercept form submission and update cart count after successful addition
+    $("#addToCartForm").submit(function(event) {
+        event.preventDefault();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            data: $(this).serialize(),
+            success: function(response) {
+                // Show success message or handle as needed
+                // Update cart count after successful addition
+                updateCartCount();
+            },
+            error: function(xhr, status, error) {
+                // Handle errors
+            }
+        });
+    });
+
+    // Update cart count every 10 seconds
+    setInterval(updateCartCount, 10000); // 10 seconds
+</script>
+</html>

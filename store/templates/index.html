@@ -1,0 +1,684 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load cart %}
+{% load custom_filter %}
+<!-- body -->
+<style>
+   .fade-in {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+.fade-in.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+    .fade-in {
+          animation: fadeIn 0.5s ease-out; /* Adjust the animation duration and timing function as needed */
+      }
+  
+      @keyframes fadeIn {
+          from {
+              opacity: 0;
+              transform: translateY(-20px); /* Start from 20px above */
+          }
+          to {
+              opacity: 1;
+              transform: translateY(0); /* Fade in and move down */
+          }
+      }
+  
+      /* Custom CSS styles for the close button */
+      .message-box {
+          position: fixed;
+          top: 90px;
+          right: 20px;
+          color: #ccc;
+          background-color: black;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          padding: 10px 20px;
+          border-radius: 5px;
+          z-index: 999;
+          animation: fadeIn 0.5s ease-out;
+      }
+  
+      .btn-close {
+          position: absolute;
+          top: 5px;
+          right: 5px;
+          background-color: white;
+      }
+  
+      .loader-bar {
+          width: 100%;
+          height: 5px;
+          background-color: #ccc;
+          position: relative;
+          border-radius: 5px;
+          margin-top: 5px;
+      }
+  
+      .loader-progress {
+          width: 100%;
+          height: 100%;
+          background-color: #007bff;
+          border-radius: 5px;
+          position: absolute;
+          top: 0;
+          left: 0;
+      }
+  
+  
+      .quantity-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(77, 72, 72);
+    padding: 10px; /* Adjust padding as needed */
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 300px; /* Adjust the width as needed */
+    height: auto; /* Ensure the height adjusts according to content */
+}
+
+
+.quantity-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(77, 72, 72);
+    padding: 0px 10px; /* Adjust padding as needed */
+    border-radius: 5px;
+    
+}
+
+
+.quantity-button {
+    border: none; /* Remove button border */
+    cursor: pointer; /* Add pointer cursor */
+    background-color: transparent;
+    color: white;
+    font-size: 20px; /* Adjust font size as needed */
+    padding: 5px 10px; /* Adjust padding as needed */
+}
+
+
+.quantity-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.quantity {
+    color: white;
+    font-weight: bold;
+}
+
+.quantity-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out; /* Adjust the animation duration and timing function as needed */
+    opacity: 1; /* Ensure elements are visible after animation */
+    visibility: visible; /* Ensure elements are visible after animation */
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out; /* Add transition properties */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px); /* Start from 20px above */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* Fade in and move down */
+    }
+}
+/* Add animation for card elements */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeInUp 0.5s ease-out; /* Apply animation to the card elements */
+    transition: transform 0.3s ease; /* Add transition for smoother hover effect */
+}
+
+.card img {
+    transition: transform 0.3s ease; /* Apply transition to the transform property */
+}
+
+.card:hover img {
+    transform: scale(1.05); /* Scale up the image on hover */
+}
+@media (max-width: 345px) {
+    .mx-auto {
+    margin-right: auto !important;
+    margin-left: .5em !important;
+}        body {
+    overflow-x: hidden; /* Hide scrollbar */
+}
+.btncart{
+    margin-top: 1em;
+}
+
+    }
+
+
+    
+    @media (max-width: 767px) {
+
+.btncart{
+    margin-top: .7em;
+    margin-left: .7em;
+}
+.btndet{
+    margin-left: 2em;
+}
+    }
+
+    
+    @media (min-width: 992px) {
+
+.btncart{
+    margin-top: -.1em;
+    width: 7.5em;
+}
+.btndet{
+    margin-left: -1em;
+}
+    }    
+    .btn:not(:disabled):not(.disabled) {
+    cursor: pointer;
+    /* margin: 1em; */
+} 
+/* footer{
+    margin-left: -12px;
+    margin-right: -20px;
+    width: 120%;
+} */
+/* Style for the container */
+
+
+/* Style for the card title */
+.card-title {
+    font-size: 1.25rem; /* Adjust font size as needed */
+    margin-bottom: 0.75rem; /* Adjust margin bottom as needed */
+}
+
+/* Style for the regular price */
+.regular-price {
+    color: #333; /* Adjust color as needed */
+}
+
+/* Style for the deleted price */
+.deleted-price {
+    color: #999; /* Adjust color as needed */
+}
+
+/* Style for the "View Details" button */
+.btn {
+    display: inline-block;
+    background-color: rgb(36, 34, 34);
+    color: white;
+    padding: 0.375rem 0.75rem; /* Adjust padding as needed */
+    border: none;
+    border-radius: 0.25rem; /* Adjust border radius as needed */
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #222; /* Adjust hover background color as needed */
+}
+
+/* Style for the "Already in Cart" text */
+p {
+    font-size: 0.875rem; /* Adjust font size as needed */
+}
+
+/* Style for the link within "Already in Cart" text */
+p a {
+    color: blue; /* Adjust color as needed */
+}
+
+p a:hover {
+    text-decoration: underline; /* Adjust hover effect as needed */
+}
+
+/* Style for the container holding the product cards */
+#products {
+    margin-top: 20px; /* Adjust margin top as needed */
+}
+
+/* Style for each product card */
+.card {
+    margin-bottom: 20px; /* Adjust margin bottom as needed */
+}
+
+/* Style for the image inside the product card */
+.card-img-top {
+    max-height: 150px; /* Adjust max height as needed */
+}
+
+/* Style for the card body */
+.card-body {
+    max-height: 180px; /* Adjust max height as needed */
+    overflow: hidden; /* Hide overflow content */
+}
+/* Style for the container holding the "New Drops" section */
+.new-drops-container {
+    margin-top: 50px; /* Adjust margin top as needed */
+}
+
+/* Style for each card in the "New Drops" section */
+.new-drop-card {
+    margin-bottom: 20px; /* Adjust margin bottom as needed */
+}
+
+/* Style for the image inside the "New Drops" card */
+.new-drop-img-top {
+    max-height: 150px; /* Adjust max height as needed */
+}
+
+/* Style for the card body of "New Drops" cards */
+.new-drop-card-body {
+    max-height: 180px; /* Adjust max height as needed */
+    overflow: hidden; /* Hide overflow content */
+}
+.mb-4{
+    text-align: center;
+    margin: 1.6rem;
+}
+
+.row {
+    width: 100%;
+}
+.card-body {
+    max-height: 223px;
+    overflow: hidden;
+}
+
+.container {
+    margin-top: -3px;
+}
+@media (min-width: 992px) {
+        .center-cards {
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+
+    
+    .row {
+    width: 100%;
+    justify-content: space-around;
+    justify-content: space-between;
+}   img.card-img-top {
+    border: 1px solid black;
+    border-radius: 3px;
+} 
+.carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    filter: invert(100%); /* Invert the color of the image to make it black */
+  }
+  .carousel-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8); /* Change the background color to black */
+    color: #000; /* Change the text color to black */
+}
+
+.carousel-caption h5,
+.carousel-caption p {
+    margin: 0;
+}
+
+  /* Adjust the size of the carousel */
+.carousel-item img {
+    max-width: 100%; /* Ensure images fill the carousel container */
+    height: auto; /* Maintain aspect ratio */
+}
+
+/* Set max-width for the carousel container */
+.carousel.slide2 {
+    max-width: 400px; /* Adjust as needed */
+}
+
+/* Adjust carousel caption size for smaller devices */
+@media (max-width: 576px) {
+    .carousel-caption {
+        font-size: 12px; /* Example font size for smaller devices */
+    }
+}
+/* Adjust the size of the carousel */
+.carousel-item img {
+    max-width: 100%; /* Ensure images fill the carousel container */
+    height: auto; /* Maintain aspect ratio */
+}
+
+/* Increase image height for smaller devices */
+@media (max-width: 576px) {
+    .carousel-item img {
+        height: 300px; /* Adjust the height as needed */
+    }
+}
+
+  </style>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <div class="container-fluid mt-3">
+   
+
+    {% for message in messages %}
+    <div class="message-box fade-in active" id="message-box">
+        {{ message }}
+        <div class="loader-bar">
+            <div class="loader-progress" id="loader-progress"></div>
+        </div>
+        <button type="button" class="btn-close" onclick="closeMessage()"></button>
+    </div>
+    {% endfor %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div id="carouselExampleIndicators2" class="carousel slide slide2" data-ride="carousel">
+                <div class="carousel-inner">
+                    {% for product in products %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <!-- Image -->
+                        <img class="d-block w-100" src="{{ product.image.url }}" alt="{{ product.name }}">
+                        <!-- Carousel Caption -->
+                        <div class="carousel-caption text-dark bg-light">
+                            <a href="{% url 'product-detail' product.id %}" style="color: black; text-decoration: none; :hover{text-decoration: underline; color: black;}">
+                                <h5>{{ product.name }}</h5>
+                            </a>
+                            <p class="card-text">
+                                <span class="deleted-price"><del>{{ product.deleted_price|currency }}</del></span>
+                                <span class="regular-price">{{ product.price|currency }}</span>
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- Controls -->
+                <a class="carousel-control-prev" href="#carouselExampleIndicators2" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators2" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+        
+    <div class="container mt-7 px-0">
+        <div class="d-flex justify-content-center"> <!-- Centering the content -->
+            <h2 class="text-center">Recently Viewed</h2>
+        </div>
+       
+        <div class="row justify-content-center" style="margin-left: .2em;"> <!-- Centering the row -->
+            {% for product in recently_viewed %}
+            {% if product %}
+            <div class="col-lg-3 col-md-4 col-sm-4 mb-4">
+                <div class="card">
+                    <a href="{% url 'product-detail' product.id %}" style="color: black;">
+                        <img class="card-img-top" src="{{ product.image.url }}" alt="Card image cap" style="max-height: 150px; max-width: 150px;">
+                    </a>
+                    <div class="card-body" style="color: black;">
+                        <h5 class="card-title" style="color: black;" >{{ product.name }}</h5>
+                        <p class="card-text">
+                            
+                            <span class="deleted-price"><del>{{ product.deleted_price|currency }}</del></span>
+                            <span class="regular-price">{{ product.price|currency }}</span>
+                        </p>
+                        <a href="{% url 'product-detail' product.id %}" class="btn" style="color: white; background-color: rgb(36, 34, 34);">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <p>No recently viewed</p>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="container mt-7 px-0">
+        {% if category_name %}
+        <h2 class="text-center">{{ category_name }}</h2>
+        
+        {% endif %}
+        <div class="d-flex justify-content-center"> <!-- Centering the content -->
+            <h2 class="text-center">All products</h2>
+        </div>
+        
+        <div class="row justify-content-center" style="margin-left: .2em;"> <!-- Centering the row -->
+            {% for product in products %}
+            {% if product %}
+            <div class="col-lg-3 col-md-4 col-sm-4 mb-4">
+                <div class="card fade-in">
+                    <a href="{% url 'product-detail' product.id %}" style="color: black;">
+                        <img class="card-img-top" src="{{ product.image.url }}" alt="Card image cap" style="max-height: 150px; max-width: 150px;">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">
+                            
+                            <span class="deleted-price"><del>{{ product.deleted_price|currency }}</del></span>
+                            <span class="regular-price">{{ product.price|currency }}</span>
+                        </p>
+                        <a href="{% url 'product-detail' product.id %}" class="btn" style="color: white; background-color: rgb(36, 34, 34);">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <p>No recently viewed</p>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="container mt-7 px-0 fade-in">
+        {% if category_name %}
+        <h2 class="text-center">{{ category_name }}</h2>
+        
+        {% endif %}
+        <div class="d-flex justify-content-center"> <!-- Centering the content -->
+            <h2 class="text-center">New Drops</h2>
+        </div>
+        
+        <div class="row justify-content-center" style="margin-left: .2em;"> <!-- Centering the row -->
+            {% for new_drop in new_drops %}
+            {% if new_drop %}
+            <div class="col-lg-3 col-md-4 col-sm-4 mb-4">
+                <div class="card">
+                    <a href="{% url 'product-detail' new_drop.id %}" style="color: black;">
+                        <img class="card-img-top" src="{{ new_drop.image.url }}" alt="Card image cap" style="max-height: 150px; max-width: 150px;">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ new_drop.name }}</h5>
+                        <p class="card-text">
+                            <span class="deleted-price"><del>{{ new_drop.deleted_price|currency }}</del></span>
+                            <span class="regular-price">{{new_drop.price|currency }}</span>
+                        </p>
+                        <a href="{% url 'product-detail' new_drop.id %}" class="btn" style="color: white; background-color: rgb(36, 34, 34);">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <p>No recently viewed</p>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+    
+
+
+<script>
+
+
+  
+        // Function to display floating message
+        function showMessage(message) {
+            var $messageBox = $('<div class="message-box">' +
+                '<button type="button" class="btn-close" onclick="closeMessage(this.parentElement)"></button>' + // Close button
+                '<div class="message">' + message + '</div>' + // Message content
+                '<div class="loader-bar"><div class="loader-progress"></div></div>' + // Loader bar
+                '</div>'); // Create message box element
+            $('body').append($messageBox); // Append message box to body
+            setTimeout(function() {
+                $messageBox.fadeOut(); // Fade out message box after some time
+            }, 5000); // Adjust timing as needed
+            startTimer($messageBox.find('.loader-progress')); // Start timer for loader
+        }
+
+        // Function to start the timer for the loader
+        function startTimer($loaderProgress) {
+            var width = 100; // Initial width of loader bar
+
+            // Update loader bar width every 100ms
+            var timer = setInterval(function() {
+                width -= 1; // Decrease width by 1%
+                $loaderProgress.width(width + '%');
+
+                // If loader bar width reaches 0, clear the interval
+                if (width <= 0) {
+                    clearInterval(timer);
+                }
+            }, 50); // Adjust timing as needed
+        }
+
+        // Function to retrieve CSRF token
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Check if the cookie name matches the specified name
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+
+    // JavaScript for message box functionality
+    document.addEventListener('DOMContentLoaded', function () {
+    const messageBox = document.getElementById('message-box');
+    if (messageBox) {
+        messageBox.style.display = 'block'; // Show message box
+        startTimer(); // Start timer for message box
+    }
+});
+
+// Function to close the message box
+function closeMessage() {
+    const messageBox = document.getElementById('message-box');
+    if (messageBox) {
+        messageBox.style.display = 'none'; // Hide message box
+    }
+}
+
+// Function to start the timer for the message box
+function startTimer() {
+    const loaderProgress = document.getElementById('loader-progress');
+    let width = 100; // Initial width of loader bar
+
+    // Update loader bar width every 100ms
+    const timer = setInterval(function () {
+        width -= 1; // Decrease width by 1%
+        loaderProgress.style.width = width + '%';
+
+        // If loader bar width reaches 0, close the message box
+        if (width <= 0) {
+            clearInterval(timer);
+            closeMessage();
+        }
+    }, 15); // Adjust timing as needed
+}
+// Function to add fade-in class to elements
+function fadeInElements() {
+    const elements = document.querySelectorAll('.fade-in');
+    elements.forEach(element => {
+        element.classList.add('fade-in'); // Add fade-in class to trigger animation
+    });
+}
+
+// Trigger fade-in effect when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    fadeInElements();
+});
+document.addEventListener('DOMContentLoaded', function () {
+        const messageBox = document.getElementById('message-box');
+        if (messageBox) {
+            setTimeout(() => {
+                messageBox.classList.remove('active');
+            }, 5000); // Adjust timing as needed
+        }
+    });
+
+    // Function to remove the active class after fade-in animation
+    document.addEventListener('animationend', function(event) {
+        const target = event.target;
+        if (target.classList.contains('fade-in')) {
+            target.classList.remove('active');
+        }
+    });
+    $(document).ready(function(){
+      $('.carousel').carousel({
+        interval: 3000 // Slide interval in milliseconds (e.g., 3000 for 3 seconds)
+      });
+    });
+    var slideIndex = 0;
+    showSlides1();
+
+    // Function to automatically change slides
+    function showSlides1() {
+        var i;
+        var slides = document.getElementsByClassName("slide2");
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) { slideIndex = 1 }
+        slides[slideIndex - 1].style.display = "block";
+        setTimeout(showSlides1, 3000); // Change slide every 3 seconds
+    }
+
+    // Function to change slide manually
+    function changeSlide(n) {
+        slideIndex += n;
+        showSlides1();
+    }
+
+</script>
+{% endblock %}
+
+  
+  

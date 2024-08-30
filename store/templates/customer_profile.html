@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    
+
+    .col-lg-6.col-md-8 {
+    margin-left: 3em;
+}
+</style>
+<div class="container mt-4" style="width: 100%;">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8"> <!-- Set column width for medium-sized screens and larger -->
+            <div class="card">
+                <div class="card-body text-center">
+                    <h1 class="card-title">Customer Profile</h1>
+                    <h5 class="card-text">Hello , {{ customer.username }}</h5>
+                    <p class="card-text">First Name: {{ customer.first_name }}</p>
+                    <p class="card-text">Last Name: {{ customer.last_name }}</p>
+                    <p class="card-text">Email: {{ customer.email }}</p>
+                    <p class="card-text">Phone: {{ customer.phone }}</p>
+                    <p class="card-text">Address: {{ customer.address.address }}</p>
+                    <p class="card-text text-center">Last Logged-In: {{ customer.last_login }}</p>
+                    <!-- Add any other fields you want to display -->
+                    <a href="{% url 'customer_profile_edit' %}" class="btn" style="color: white; background-color: rgb(36, 34, 34);">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

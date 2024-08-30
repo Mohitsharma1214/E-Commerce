@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %} Search {% endblock title %}
+{% block content %}
+
+{% load cart %}
+{% load custom_filter %}
+<style>
+	@media (max-width: 320px) {
+		.btndel{
+			margin-left: 2.3em;
+		}
+	}
+</style>
+<!-- body -->
+
+<div class="container-fluid mt-3">
+	<div class="row">
+		<div class="col-12 text-center"> <!-- Add the 'text-center' class to center the content -->
+			<h2>{{ category_name }}</h2>
+		</div>
+		
+
+		<!-- filter -->
+
+	    
+		<!-- all products -->
+		<div id='products' class="col-lg-9 mx-auto">
+			<div class="row mx-auto">
+				{% for product in products %}
+				<div class="card mx-auto mb-3" id={{product.id}} style="width: 18rem;">
+					<img class="card-img-top" src="{{product.image.url}}" alt="Card image cap">
+					<div class="card-body">
+						<p class="card-title">{{product.name}}</p>
+						<p class="card-text"> <b>Rs. {{product.price}}</b></p>
+							</div>
+
+					<div class="card-footer p-0 no-gutters">
+
+						
+						<a href="{% url 'product-detail' product.id %}" class="btn btndel justify-content-center" style="margin-bottom:.5em;    margin-left: 4em; text-align: center; align-items: center; color:white; background-color: rgb(36, 34, 34);">View Details</a>
+
+						
+
+					</div>
+
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock %}

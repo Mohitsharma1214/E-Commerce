@@ -1,0 +1,1045 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+{% load cart %}
+{% load custom_filter %}
+{% block head %}
+    {{ block.super }}
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    
+{% endblock %}
+<style>
+    /* Custom CSS styles */
+
+   /* Apply Montserrat font to all text */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+div,
+
+a,
+button,
+input,
+textarea,
+select,
+option,
+label {
+    font-family: 'Montserrat', sans-serif;
+}
+
+    .fade-in {
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Custom CSS styles for the close button */
+    .message-box {
+        position: fixed;
+        top: 90px;
+        right: 20px;
+        color: #ccc;
+        background-color: black;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 10px 20px;
+        border-radius: 5px;
+        z-index: 999;
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    .btn-close {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: white;
+    }
+
+    .loader-bar {
+        width: 100%;
+        height: 5px;
+        background-color: #ccc;
+        position: relative;
+        border-radius: 5px;
+        margin-top: 5px;
+    }
+
+    .loader-progress {
+        width: 100%;
+        height: 100%;
+        background-color: #007bff;
+        border-radius: 5px;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    /* CSS for animated delete icon */
+    .delete-icon {
+        position: relative;
+        display: inline-block;
+    }
+
+    .delete-icon .fas {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .delete-icon.deleted .fas {
+        transform: translateY(-100%);
+    }
+
+    .quantity-box {
+        display: flex;
+        width: 70%;
+        align-items: center;
+        border-radius: 20px;
+        border: 1px solid;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        padding: 5px;
+    }
+
+    .quantity-button {
+        color: black;
+        border: none;
+        cursor: pointer;
+        background-color: transparent;
+    }
+
+    .quantity {
+        margin-left: 43px;
+        width: 38%;
+        height: 10%;
+    }
+
+    .quantity-button.disabled {
+        cursor: not-allowed;
+        opacity: .5;
+    }
+
+    th.center {
+        text-align: center;
+    }
+
+    /* Add styles for the checkout modal */
+    .btn-success {
+        background-color: #343a40;
+        border-color: #343a40;
+        color: #fff;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-success:hover {
+        background-color: #495057;
+    }
+    .btn-close {
+    position: absolute;
+    top: 5px; /* Adjust as needed */
+    right: 5px; /* Adjust as needed */
+    width: 20px;
+    height: 20px;
+    border: none;
+    cursor: pointer;
+    margin-right: .5em;
+}
+
+
+    .btn-close:hover {
+        color: #ccc;
+    }
+
+    .checkout-btn {
+        position: relative;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        color: white;
+        background-color: black;
+        border-radius: 30px;
+        border: 1px solid;
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+    .checkout-form {
+    padding: 20px; /* Add padding to the form */
+    background-color: #f8f9fa; /* Set background color */
+    border-radius: 10px; /* Add border radius */
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2); /* Add box shadow */
+}
+
+.checkout-form label {
+    font-weight: bold; /* Make labels bold */
+}
+
+.checkout-form input[type="text"] {
+    width: 100%; /* Set input width to fill the container */
+    padding: 10px; /* Add padding to inputs */
+    margin-bottom: 10px; /* Add margin between inputs */
+    border: 1px solid #ccc; /* Add border */
+    border-radius: 5px; /* Add border radius */
+    box-sizing: border-box; /* Ensure padding and border are included in width */
+}
+
+.checkout-form button[type="submit"] {
+    padding: 10px 20px; /* Add padding to the button */
+    background-color: #222d24; /* Set background color */
+    color: #fff; /* Set text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Add border radius */
+    cursor: pointer; /* Set cursor to pointer */
+    transition: background-color 0.3s ease; /* Add transition effect */
+}
+
+.checkout-form button[type="submit"]:hover {
+    background-color: #1c281e; /* Change background color on hover */
+}
+/* CSS for input focus state */
+.checkout-form input[type="text"]:focus {
+    border-color: #007bff; /* Change border color on focus */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Add box shadow on focus */
+}
+/* CSS for the blinking line */
+.input-container {
+    position: relative;
+}
+
+.input-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px; /* Height of the blinking line */
+    background-color: #007bff; /* Color of the blinking line */
+    transition: width 0.3s; /* Transition effect for the width */
+}
+
+/* CSS to increase line width on input focus */
+.input-container input:focus +::after {
+    width: 100%; /* Set width to 100% on input focus */
+}
+
+/* CSS to change text color on input focus */
+.input-container input:focus {
+    color: #007bff; /* Change text color on input focus */
+}
+
+ 
+
+    /* Additional styles to ensure content fits without scrollbars */
+
+
+    .container {
+       
+        margin-top: 40px; 
+        
+    }
+
+    /* CSS for product list */
+    .product-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around; /* Distribute items evenly */
+        gap: 20px; /* Adjust the gap between products */
+    }
+
+    /* CSS for individual product */
+    .product {
+        flex: 1 0 calc(40% - 20px); /* Adjust the width of each product */
+        max-width: calc(30% - 20px); /* Limit maximum width of each product */
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        overflow: hidden; /* Ensure contents don't overflow */
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+        transition: box-shadow 0.3s ease; /* Add transition effect for hover */
+        display: flex; /* Use flexbox for product layout */
+        flex-direction: column; /* Arrange items vertically */
+    }
+
+    /* CSS for product image */
+    .product-image {
+        flex: 1 0 auto; /* Allow image to grow */
+        height: 100px; /* Fixed height for the image */
+        overflow: hidden; /* Ensure image doesn't overflow */
+    }
+
+    .product-image img {
+        width: 300%;
+        height: 100%;
+        object-fit: cover; /* Ensure image fills the container */
+    }
+
+    /* CSS for product details */
+    .product-details {
+     
+        padding: 10px;
+        display: flex;
+        flex-direction: column; /* Arrange details vertically */
+    }
+
+    .product-name a {
+        font-weight: bold;
+        color: black;
+        text-decoration: none;
+        flex-grow: 1; /* Allow name to grow */
+    }
+
+    .product-price {
+        color: #888;
+    }
+
+    .product-quantity {
+        margin-top: 5px;
+        display: flex;
+        align-items: center;
+    }
+
+    .quantity-button {
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 0 5px;
+    }
+
+    .quantity {
+        margin: 0 5px;
+    }
+
+    .product-total {
+        margin-top: 5px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .product-remove {
+        margin-top: auto; /* Push remove button to the bottom */
+    }
+
+    .empty-cart {
+        font-style: italic;
+        color: #888;
+    width: 100%;
+    text-align: center;
+}
+
+
+    .cart-heading {
+        font-size: 2.5rem; /* Adjust font size for large screens */
+    }
+
+  
+
+    .sticky-form {
+        position: sticky;
+        top: 20px; /* Adjust the top position as needed */
+        z-index: 1000; /* Ensure the form is above other content */
+        background-color: #fff; /* Optional: Add a background color for better visibility */
+        padding: 20px; /* Optional: Add padding for spacing */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better visual separation */
+    }
+
+    /* Default styles */
+    .modal-dialog {
+        max-width: 90%;
+        margin: auto;
+        overflow: hidden; /* Add this line to hide the scrollbar */
+    }
+
+    /* Modal content styles */
+    .modal-content {
+        border-radius: 10px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+        background-color: #f8f9fa;
+        border-bottom: none;
+    }
+
+    .modal-title {
+        color: #343a40;
+        font-weight: bold;
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    .modal-footer {
+        border-top: none;
+    }
+
+    /* Close button styles */
+    .close {
+        color: #6c757d;
+        opacity: 1;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #343a40;
+        opacity: 1;
+    }
+
+    /* Media queries for different device widths */
+    @media (max-width: 576px) {
+        .modal-dialog {
+            max-width: 100%;
+        }
+    }
+
+    @media (min-width: 576px) and (max-width: 768px) {
+        .modal-dialog {
+            max-width: 90%;
+        }
+    }
+
+    @media (min-width: 768px) and (max-width: 992px) {
+        .modal-dialog {
+            max-width: 80%;
+        }
+    }
+
+    @media (min-width: 992px) and (max-width: 1200px) {
+        .modal-dialog {
+            max-width: 70%;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .modal-dialog {
+            max-width: 60%;
+        }
+    }
+
+.estimated-total{
+    margin-top: 20px;
+    text-align: center;
+}
+/* Adjust the font size of the cart heading for different screen sizes */
+.cart-heading {
+    font-size: 2.5rem; /* Adjust font size for large screens */
+}
+
+@media (max-width: 768px) {
+    .cart-heading {
+        font-size: 2rem; /* Adjust font size for medium screens */
+    }
+}
+
+@media (max-width: 576px) {
+    .cart-heading {
+        font-size: 1.5rem; /* Adjust font size for small screens */
+    }
+}
+
+/* Ensure the product list adjusts its layout for different screen sizes */
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; /* Distribute items evenly */
+    gap: 20px; /* Adjust the gap between products */
+}
+
+/* Ensure each product adjusts its width for different screen sizes */
+.product {
+    flex: 1 0 calc(30% - 20px); /* Adjust width for all screen sizes */
+    max-width: calc(30% - 20px); /* Limit maximum width for all screen sizes */
+}
+
+@media (max-width: 576px) {
+    .product {
+        flex-basis: calc(50% - 20px); /* Adjust product width for small screens */
+        max-width: calc(50% - 20px); /* Limit maximum width of each product for small screens */
+    }
+}
+
+/* Adjust the font size of product names for different screen sizes */
+.product-name a {
+    font-size: 1rem; /* Adjust font size for all screen sizes */
+}
+.product-name a:hover{
+    text-decoration: underline;
+}
+
+@media (max-width: 576px) {
+    .product-name a {
+        font-size: 0.9rem; /* Adjust font size for small screens */
+    }
+}
+
+/* Adjust the font size of product prices for different screen sizes */
+.product-price {
+    font-size: 0.9rem; /* Adjust font size for all screen sizes */
+}
+
+@media (max-width: 576px) {
+    .product-price {
+        font-size: 0.8rem; /* Adjust font size for small screens */
+    }
+}
+
+/* Adjust the font size of quantity buttons for different screen sizes */
+.quantity-button {
+    font-size: 0.9rem; /* Adjust font size for all screen sizes */
+}
+
+@media (max-width: 576px) {
+    .quantity-button {
+        font-size: 0.8rem; /* Adjust font size for small screens */
+    }
+}
+
+/* Adjust the font size of the empty cart message for different screen sizes */
+
+
+
+
+/* Adjust the font size of the checkout button for different screen sizes */
+.checkout-btn1 {
+    font-size: 1rem; /* Adjust font size for all screen sizes */
+}
+
+/* Adjust the font size of the coupon input for different screen sizes */
+.custom-input {
+    width: 200px; /* Adjust width for all screen sizes */
+}
+
+@media (max-width: 576px) {
+    .custom-input {
+        width: 150px; /* Adjust width for small screens */
+    }
+}
+
+/* Ensure the coupon container adjusts its alignment for different screen sizes */
+.coupon-container {
+    text-align: center; /* Center coupon container for all screen sizes */
+} 
+
+/* Ensure each product maintains its width and height for different screen sizes */
+/* Ensure each product maintains its width and height for different screen sizes */
+/* Ensure each product maintains its width and height for different screen sizes */
+.product {
+    flex: 1 0 calc(40% - 50px); /* Adjust width for all screen sizes */
+    max-width: calc(40% - 50px); /* Limit maximum width of each product for all screen sizes */
+    height: 22.8em; /* Set height to auto to accommodate content */
+    display: flex; /* Use flexbox to align content vertically */
+    flex-direction: column; /* Arrange items vertically */
+}
+
+@media (max-width: 768px) {
+    /* Adjust product width for medium screens */
+    .product {
+        flex-basis: calc(50% - 20px); /* Adjust product width for medium screens */
+        max-width: calc(50% - 20px); /* Limit maximum width of each product for medium screens */
+    }
+}
+
+@media (max-width: 576px) {
+    /* Adjust product width for small screens */
+    .product {
+        flex-basis: calc(100% - 20px); /* Adjust product width for small screens to display one card per row */
+        max-width: calc(100% - 20px); /* Limit maximum width of each product for small screens */
+    }
+}
+
+
+/* Adjust the product image to fit within the card */
+.product-image {
+    flex: 1 0 auto; /* Allow image to grow */
+    overflow: hidden; /* Hide any overflowing content */
+}
+
+.product-image img {
+    width: 100%; /* Ensure the image fills the container */
+    height: auto; /* Automatically adjust height to maintain aspect ratio */
+}
+
+
+    /* Adjust the font size of product names for small screens */
+    .product-name a {
+        font-size: 0.9rem; /* Adjust font size for small screens */
+    }
+
+    /* Adjust the font size of product prices for small screens */
+    .product-price {
+        font-size: 0.8rem; /* Adjust font size for small screens */
+    }
+
+    /* Adjust the font size of quantity buttons for small screens */
+    .quantity-button {
+        font-size: 0.8rem; /* Adjust font size for small screens */
+    }
+
+  
+    
+    /* Limit the height of product details for small screens */
+    .product-details {
+        max-height: 200px; /* Adjust maximum height as needed */
+        overflow: auto; /* Add scrollbar if content exceeds max-height */
+        align-items: center;
+
+    }
+
+    .product-image img {
+    width: 90%;
+    height: auto;
+}
+img.img-thumbnail {
+  
+   
+    border: 1px solid;
+    height: 90%;
+    margin-top: 6px;
+}
+
+
+.product-image img {
+    width: 300%;
+    height: 100%;
+    object-fit: cover;
+}
+.custom-input {
+    border: 1px solid #ccc; /* Add border */
+    border-radius: 5px; /* Optional: Add border-radius for rounded corners */
+    padding: 8px; /* Optional: Add padding for spacing inside the input box */
+}
+.row {
+    width: 100%;
+}
+
+.product {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.product-image {
+    flex: 0 0 150px; /* Adjust the width of the image */
+}
+
+.product-image img {
+    max-width: 100%;
+    max-height: 150px; /* Adjust the maximum height of the image */
+    object-fit: contain; /* Maintain aspect ratio without cropping */
+}
+
+.product-details {
+    flex: 1;
+    padding-left: 10px; /* Adjust spacing between image and details */
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.product-list .product {
+    width: calc(33.33% - 20px); /* Adjust the width of each product card */
+}
+
+@media (max-width: 768px) {
+    .product-list .product {
+        width: calc(50% - 20px); /* Adjust the width of each product card on smaller screens */
+    }
+}
+img.card-img-top {
+    border: 1px solid black;
+    border-radius: 3px;
+}
+/* Adjust the height of the container when the cart is empty */
+.cart-container {
+    min-height: 3em; /* Adjust the height as needed */
+}
+
+</style>
+
+
+<div class="container">
+    <div class="border rounded p-3 m-4">
+        <h2 class="display-5 text-center mb-1 cart-heading">{{ customer_name }}'s Cart!</h2>
+           
+        <!-- Display messages -->
+        {% for message in messages %}
+        <div class="message-box fade-in active" id="message-box">
+            {{ message }}
+            <div class="loader-bar">
+                <div class="loader-progress" id="loader-progress"></div>
+            </div>
+            <button type="button" class="btn-close" onclick="closeMessage()"></button>
+        </div>
+        {% endfor %}
+        <div class="container">
+            <div class="product-list">
+                {% for item in items %}
+                <div class="product fade-in">
+                    <div class="product-image">
+                        <img class="img-thumbnail" src="{{ item.product.image.url }}" alt="">
+                    </div>
+                    <div class="product-details">
+                        <div class="product-name">
+                            <a href="{% url 'product-detail' item.product.id %}" style="color: black;">{{ item.product.name }}</a>
+                        </div>
+                        <!-- Display size name -->
+                        <div class="product-size">
+                            Size: {{ item.size}}
+                        </div>
+                        <div class="product-price" style="color: #1c281e;">
+                            <del>{{ item.product.deleted_price|currency}}</del> {{ item.product.price|currency }}
+                        </div>
+                        <!-- Product Quantity -->
+                        <div class="product-quantity">
+                            <!-- Decrease Quantity Button -->
+                            <form action="{% url 'remove_cart' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                                <!-- Add hidden input field for size -->
+                                <input type="hidden" name="size" value="{{ item.size.name }}">
+                                <button type="submit" class="quantity-button {% if item.quantity == 1 %}disabled{% endif %}" {% if item.quantity == 1 %}disabled{% endif %}>-</button>
+                                <input type="hidden" name="action" value="decrease">
+                            </form>
+                            
+                            <!-- Display Quantity -->
+                            <span style="margin-top: -20px;" class="quantity">{{ item.quantity }}</span>
+                            <!-- Increase Quantity Button -->
+                            <form action="{% url 'remove_cart' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                                <!-- Add hidden input field for size -->
+                                <input type="hidden" name="size" value="{{ item.size.name }}">
+                                <button type="submit" class="quantity-button">+</button>
+                                <input type="hidden" name="action" value="increase">
+                            </form>
+                            
+                        </div>
+                        <!-- Product Total -->
+                        <div class="product-total">
+                            {{ item.total_price|currency }}
+                        </div>
+                        <!-- Remove Product Button -->
+                        <div class="product-remove">
+                            <form action="{% url 'remove_cart' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                                <!-- Add hidden input field for size -->
+                                <input type="hidden" name="size" value="{{ item.size.name }}">
+                                <body>
+                                    <button type="submit" class="btn btn-outline-dark">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                          </svg> Remove
+                                    </button>
+                                <input type="hidden" name="action" value="remove">
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="empty-cart text-center">Your cart is empty.</p>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="total">
+            <div class="estimated-total">
+                <strong>Estimated Total:</strong>
+                {% if not request.session.applied_coupon %}
+                    <span class="rupee">{{ total_cart_price|currency }}</span>
+                {% else %}
+                    <span class="rupee"> <del>{{ total_cart_price|currency }}</del> {{ request.session.cart_total_price|currency }} </span>
+                {% endif %}
+            </div>
+        </div>
+        
+        
+                
+        <!-- Coupon form or applied coupon -->
+        {% if not items %}
+        <div class="text-center">
+            <!-- <p>Your cart is empty.</p> -->
+        </div>
+        <div class="container">
+            <div class="row justify-content-center align-items-center"  {% if not items %} style="height: 1em;" {% else %} style="min-height: 100vh;" {%endif %}>
+                <div class="col-md-6">
+                    {% elif request.session.applied_coupon %}
+                    <div class="text-center mt-3">
+                        <p>Applied Coupon: {{ request.session.applied_coupon }}</p>
+                        <form action="remove-coupon" method="POST" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success" style="background-color: rgb(71, 67, 67); color: white; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);">Remove Coupon</button>
+                        </form>
+                    </div>
+                    {% else %}
+                    <div class="text-center mt-3 coupon-container">
+                        <form action="apply-coupon" method="POST" class="d-inline coupon-input">
+                            {% csrf_token %}
+                            <div class="form-group d-flex justify-content-center">
+                                <input type="text" class="form-control form-control-sm text-center custom-input" name="coupon_code" placeholder="Enter coupon code" required>
+                            </div>
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-primary" style="background-color: rgb(71, 67, 67); color: white; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);">Apply Coupon</button>
+                            </div>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        </div>
+                <style>
+            .custom-input {
+                width: 150px; /* Adjust the width as needed */
+            }
+        </style>
+
+        <!-- Checkout button -->
+        {% if items %}
+        <div class="text-center mt-3"> <!-- Change the class and add margin top for centering -->
+            <a href="#" data-toggle="modal" style="color: white; background-color: black;  :hover {background-color:white; color:black}" data-target="#exampleModal" class="btn btn-lg checkout-btn1">Proceed to Checkout</a> <!-- Add btn-lg class for larger size -->
+        </div>
+        {% endif %}
+        <br>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Checkout</h5>
+                <strong style="margin-left: 10px;">Total:</strong>
+                {% if not request.session.applied_coupon %}
+                    <span class="rupee">{{ total_cart_price|currency }}</span>
+                {% else %}
+                    <span class="rupee"> <del>{{ total_cart_price|currency }}</del> {{ request.session.cart_total_price|currency }} </span>
+                {% endif %}
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-6 checkout-form">
+                            <form id="checkout-form" action="/check-out" method="POST" class="sticky-form" onsubmit="return validateForm()">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="address" class="form-label">Select or Add new Address in the <a style="text-decoration: underline; color: black;" href="/customer/profile/">Profile</a>:</label>
+                                    {% if addresses %}
+                                        <div class="form-group">
+                                            <label class="form-label">Select Existing Address:</label><br>
+                                            {% for address in addresses %}
+                                                <div class="form-check">
+                                                    <input required class="form-check-input" type="radio" name="address" id="address_{{ address.id }}" value="{{ address.id }}">
+                                                    <label class="form-check-label" for="address_{{ address.id }}">Address {{ forloop.counter }}: <br> {{ address.address }}</label>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="phone" class="form-label">Phone</label>
+                                            <input type="tel" class="form-control" id="phone" name="phone" pattern="[0-9]{10}" required required title="Please enter a 10-digit phone number (e.g., 1234567890) without the country code" placeholder="1234567890">
+                                        </div>
+                                        <!-- Centering the button -->
+                                        <div class="text-center">
+                                            <button type="submit" class="checkout-btn">Check out</button>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-6 order-details">
+                            <!-- Order Details -->
+                            <h5>Order Details</h5>
+                            <hr>
+                            <div class="d-flex flex-column align-items-center">
+                                {% for item in items %}
+                                    <div class="mb-4">
+                                        <div class="text-center mb-2">
+                                            <img class="img-thumbnail" style="max-width: 200px;" src="{{ item.product.image.url }}" alt="">
+                                        </div>
+                                        <div class="text-center mb-2">
+                                           <b><span>{{ item.product.name }}</span></b> 
+                                        </div>
+                                        <div class="product-size text-center">
+                                            Size: {{ item.size.name }}
+                                        </div>
+                                        <div class="text-center mb-2">
+                                            <span>Quantity: {{ item.quantity }}</span>
+                                        </div>
+                                        <div class="text-center">
+                                            <span>Price: <b> {{ item.total_price|currency }}</b></span>
+                                        </div>
+                                    </div>
+                                {% empty %}
+                                    <div class="text-center" >
+                                        Your cart is empty.
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <hr>
+                            <div class="text-end">
+                                <strong>Estimated Total:</strong>
+                                {% if not request.session.applied_coupon %}
+                                    <span class="rupee">Rs. {{ products|total_cart_price:request.session.cart }}</span>
+                                {% else %}
+                                    <span class="rupee"><del>{{ total_cart_price|currency }}</del> {{ request.session.cart_total_price|currency }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    
+ 
+
+function closeMessage() {
+    const messageBox = document.getElementById('message-box');
+    if (messageBox) {
+        messageBox.style.display = 'none'; // Hide the message box
+    }
+}
+ 
+// JavaScript for message box functionality
+    document.addEventListener('DOMContentLoaded', function () {
+        const messageBox = document.getElementById('message-box');
+        if (messageBox) {
+            messageBox.style.display = 'block'; // Show message box
+            startTimer(); // Start timer for message box
+        }
+    });
+
+    // Function to close the message box
+    
+
+    // Function to start the timer for the message box
+    function startTimer() {
+        const loaderProgress = document.getElementById('loader-progress');
+        let width = 100; // Initial width of loader bar
+
+        // Update loader bar width every 100ms
+        const timer = setInterval(function () {
+            width -= 1; // Decrease width by 1%
+            loaderProgress.style.width = width + '%';
+
+            // If loader bar width reaches 0, close the message box
+            if (width <= 0) {
+                clearInterval(timer);
+                closeMessage();
+            }
+        }, 15); // Adjust timing as needed
+    }
+    // Function to add fade-in class to elements
+    function fadeInElements() {
+        const elements = document.querySelectorAll('.fade-in');
+        elements.forEach(element => {
+            element.classList.add('fade-in'); // Add fade-in class to trigger animation
+        });
+    }
+
+    // Trigger fade-in effect when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        fadeInElements();
+    });
+
+    function openRazorpay() {
+        var amount;
+        {% if not request.session.applied_coupon %}
+    {% with total_price=request.session.cart_total_price %}
+        {% if total_price %}
+            amount =  {{ total_price }} * 100;
+        {% else %}
+            amount =  {{ items|total_cart_price:request.session.cart }} * 100;
+        {% endif %}
+    {% endwith %}
+{% else %}
+    {% with total_price=request.session.cart_total_price %}
+        amount = {{ total_price }} * 100;
+    {% endwith %}
+{% endif %}
+
+        // Convert amount to paise (integer) and ensure minimum is 100 paise
+        
+
+        var options = {
+            key: 'rzp_test_Hvfb0VmJQbUQ4m',
+            amount: amount,
+            currency: 'INR',
+            name: 'TeArt',
+            description: 'Payment for your order',
+            image: '/static/images/TeArt.svg',
+            handler: function(response) {
+                console.log(response);
+                if (response.razorpay_payment_id) {
+                    document.getElementById('checkout-form').submit();
+                }
+            },
+            prefill: {
+                name: '{{customer_name}}' ,
+                email: '{{customer_email}}',
+                contact: {{customer_phone}}
+            }
+        };
+        var rzp = new Razorpay(options);
+        rzp.open();
+    }
+    function validateForm() {
+        // Check if an existing address is selected
+        var existingAddressChecked = false;
+        var existingAddresses = document.querySelectorAll('input[name="address"]');
+        for (var i = 0; i < existingAddresses.length; i++) {
+            if (existingAddresses[i].checked) {
+                existingAddressChecked = true;
+                break;
+            }
+        }
+        
+        // Check if a new address is entered
+        var newAddress = document.getElementById("new_address").value;
+        
+        // Check if phone number is entered
+        var phone = document.getElementById("phone").value;
+        
+        if (!existingAddressChecked && !newAddress) {
+            // If neither existing nor new address is selected, show error message
+            alert("Please select an existing address or enter a new one.");
+            return false;
+        }
+        
+        if (!phone) {
+            // If phone number is not entered, show error message
+            alert("Please enter a phone number.");
+            return false;
+        }
+        
+        // Form is valid, proceed with submission
+        return true;
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('#checkout-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            openRazorpay();
+        });    
+    });
+    
+</script>
+
+{% endblock %}

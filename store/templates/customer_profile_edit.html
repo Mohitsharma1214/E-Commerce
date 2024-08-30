@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .bg-custom {
+        background-color: #f0f0f0; /* Specify your desired background color */
+    }
+
+    
+
+    .col-lg-6.col-md-8 {
+    margin-left: 3em;
+}
+
+</style>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow bg-custom">
+                <div class="card-body">
+                    <h1 class="card-title text-center">Edit Customer Profile</h1>
+                    <h5 class="card-text text-center">Hello , {{ customer.username }}</h5>
+                    <form method="post" class="w-100 d-flex flex-column align-items-center">
+                        {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        {% if addresses %}
+                            <div class="form-group">
+                                <label>Select Address:</label><br>
+                                {% for address in addresses %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" id="address_{{ address.id }}" name="address" value="{{ address.id }}"
+                                            {% if address.id == form.instance.address.id %} checked {% endif %}>
+                                        <label class="form-check-label" for="address_{{ address.id }}">Address {{ forloop.counter }}:</label>
+                                        <br>
+                                        <span>{{ address.address }}</span><br>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p>No addresses available. Please add a new one.</p>  
+                        {% endif %}
+
+                        <!-- New Address Field -->
+                        <div class="form-group" id="newAddressBox" style="display: none;">
+                            <label>Add New Address:</label><br>
+                            <input type="text" class="form-control" id="new_address" name="new_address">
+                        </div>
+                        <!-- Button for opening the address form -->
+                        <div class="form-group">
+                            <button type="button" class="btn btn-secondary" onclick="toggleAddressForm()" id="openAddressBtn">Add New Address</button>
+                            <button type="submit" class="btn btn-primary" style="display: none; margin-top: 1em;" name="action" value="add_address" id="submitAddressBtn">Submit Address</button>
+                        </div>
+                        
+                        <!-- Form fields for updating password -->
+                        <div class="form-group" id="passwordForm" style="display: none;">
+                            <label for="current_password">Current Password:</label><br>
+                            <input type="password" id="current_password" name="current_password" class="form-control">
+                        </div>
+                        <div class="form-group" id="newPasswordForm" style="display: none;">
+                            <label>New Password:</label><br>
+                            <input type="password" class="form-control" id="new_password" name="new_password">
+                        </div>
+                        <!-- Button for opening the password update form -->
+                        <div class="form-group">
+                            <button type="button" class="btn btn-secondary" onclick="togglePasswordForm()" id="openPasswordBtn">Update Password</button>
+                            <button type="submit" class="btn btn-primary" style="display: none; margin-top: 1em;" name="action" value="update_password" id="submitPasswordBtn">Update Password</button>
+                        </div>
+                        <button type="submit" class="btn btn-primary" name="action" value="save_changes" style="margin-top: 1em;">Save Changes</button>
+
+                        <!-- Display messages -->
+                      
+                    </form>
+                    <br>
+                    
+                    <p class="card-text text-center">Last Logged-In: {{ customer.last_login }}</p>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Space from footer -->
+<div style="height: 50px;"></div>
+
+<script>
+    function toggleAddressForm() {
+        var addressForm = document.getElementById("newAddressBox");
+        var openAddressBtn = document.getElementById("openAddressBtn");
+        var submitAddressBtn = document.getElementById("submitAddressBtn");
+        
+        if (addressForm.style.display === "none") {
+            addressForm.style.display = "block";
+            submitAddressBtn.style.display = "block";
+            openAddressBtn.style.display = "none";
+        } else {
+            addressForm.style.display = "none";
+            submitAddressBtn.style.display = "none";
+            openAddressBtn.style.display = "block";
+        }
+    }
+    
+    function togglePasswordForm() {
+        var passwordForm = document.getElementById("passwordForm");
+        var newPasswordForm = document.getElementById("newPasswordForm");
+        var openPasswordBtn = document.getElementById("openPasswordBtn");
+        var submitPasswordBtn = document.getElementById("submitPasswordBtn");
+        
+        if (passwordForm.style.display === "none") {
+            passwordForm.style.display = "block";
+            newPasswordForm.style.display = "block";
+            submitPasswordBtn.style.display = "block";
+            openPasswordBtn.style.display = "none";
+        } else {
+            passwordForm.style.display = "none";
+            newPasswordForm.style.display = "none";
+            submitPasswordBtn.style.display = "none";
+            openPasswordBtn.style.display = "block";
+        }
+    }
+</script>
+{% endblock %}

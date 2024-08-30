@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us - TeArt{% endblock %}
+
+{% block content %}
+<style>
+    .center-content {
+    margin: 0 auto;
+    width: 50%; /* Adjust width as needed */
+}
+
+.info-line {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.info-label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+</style>
+    <div class="center-content">
+        <h2 class="text-center">Contact Information</h2>
+
+        <div class="contact-info">
+            <div class="info-line"><span class="info-label">Trade Name:</span> TeArt</div>
+            <div class="info-line"><span class="info-label">Phone Number:</span> <a href="tel:+917879115913">7879115913</a></div>
+            <div class="info-line"><span class="info-label">Email:</span> <a href="mailto:ptms2525@gmail.com">ptms2525@gmail.com</a></div>
+            <div class="info-line"><span class="info-label">Physical Address:</span> Shanti Kunj Colony, Berasia, Bhopal, India</div>
+            <div class="info-line"><span class="info-label">VAT Number:</span> [Your VAT Number]</div>
+            <div class="info-line"><span class="info-label">Trade Number:</span> [Your Trade Number]</div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,238 @@
+{% extends 'base.html' %}
+{% block title %}Contact Us{% endblock %}
+{% block content %}
+<style>
+
+    h1 {
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+        text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    #contact-form {
+        width: 60%;
+        margin: 0 auto;
+        padding: 30px;
+        border-radius: 10px;
+        background-color: #fff;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    #contact-form label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    #contact-form input[type="text"],
+    #contact-form input[type="email"],
+    #contact-form textarea {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        color: #333;
+        font-size: 1.2rem;
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    #contact-form input[type="text"]:focus,
+    #contact-form input[type="email"]:focus,
+    #contact-form textarea:focus {
+        outline: none;
+        background-color: #e0e0e0;
+    }
+
+    #contact-form textarea {
+        height: 150px;
+        resize: vertical;
+    }
+
+    #contact-form button[type="submit"] {
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 5px;
+        background-color: #333;
+        color: #fff;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    #contact-form button[type="submit"]:hover {
+        background-color: #555;
+    }
+
+    #messages {
+        margin-top: 20px;
+    }
+
+    .message {
+        padding: 15px;
+        border-radius: 5px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .success-message {
+        color: #155724;
+        background-color: #d4edda;
+    }
+
+    .error-message {
+        color: #721c24;
+        background-color: #f8d7da;
+    }
+    h1 {
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+        text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1); /* Add text shadow */
+    }
+
+    #contact-form {
+        width: 60%;
+        margin: 0 auto;
+        padding: 30px;
+        border-radius: 10px;
+        background-color: #fff;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    }
+     h1 {
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+        text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    #contact-form {
+        width: 80%; /* Adjusted width for smaller screens */
+        max-width: 500px; /* Limit maximum width for larger screens */
+        margin: 0 auto;
+        padding: 30px;
+        border-radius: 10px;
+        background-color: #fff;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    #contact-form label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    #contact-form input[type="text"],
+    #contact-form input[type="email"],
+    #contact-form textarea {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        color: #333;
+        font-size: 1.2rem;
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    #contact-form textarea {
+        height: 150px;
+        resize: vertical;
+    }
+
+    #contact-form button[type="submit"] {
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 5px;
+        background-color: #333;
+        color: #fff;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    #contact-form button[type="submit"]:hover {
+        background-color: #555;
+    }
+
+    #messages {
+        margin-top: 20px;
+    }
+
+    .message {
+        padding: 15px;
+        border-radius: 5px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .success-message {
+        color: #155724;
+        background-color: #d4edda;
+    }
+
+    .error-message {
+        color: #721c24;
+        background-color: #f8d7da;
+    }
+
+    /* Media queries for responsiveness */
+    @media screen and (max-width: 768px) {
+        #contact-form {
+            width: 90%; /* Adjusted width for smaller screens */
+        }
+    }
+</style>
+<h1>Contact Us</h1>
+<div id="messages">
+    <!-- Messages will be displayed here -->
+</div>
+<form id="contact-form" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+<script>
+    // JavaScript to handle form submission and display messages
+    const form = document.getElementById('contact-form');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const response = await fetch('{% url "contact" %}', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        const messagesDiv = document.getElementById('messages');
+        messagesDiv.innerHTML = '';
+        if (data.success) {
+            const successMessage = document.createElement('div');
+            successMessage.textContent = data.message;
+            successMessage.classList.add('message', 'success-message');
+            messagesDiv.appendChild(successMessage);
+            form.reset(); // Clear the form fields
+        } else {
+            for (const [field, errors] of Object.entries(data.errors)) {
+                for (const error of errors) {
+                    const errorMessage = document.createElement('div');
+                    errorMessage.textContent = `${field}: ${error}`;
+                    errorMessage.classList.add('message', 'error-message');
+                    messagesDiv.appendChild(errorMessage);
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

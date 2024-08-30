@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* Custom CSS for the signup page */
+
+    /* Center the card vertically */
+    .card {
+        margin-top: 50px;
+    }
+
+    /* Center the image */
+    .card img {
+        display: block;
+        margin: 0 auto;
+    }
+
+    /* Center the card title */
+    .card-title {
+        color: #000; /* Black color */
+    }
+
+    /* Add some spacing between form elements */
+    .mb-3 {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Style the submit button */
+    .btn-success {
+        background-color: #000; /* Black color */
+        border-color: #000; /* Black color */
+        color: #fff; /* White color */
+    }
+
+    .btn-success:hover {
+        background-color: #333; /* Darker shade of black */
+        border-color: #333; /* Darker shade of black */
+    }
+
+    /* Style form labels */
+    .form-label {
+        color: #000; /* Black color */
+        font-weight: bold;
+    }
+
+    /* Style form inputs */
+    .form-control {
+        border-color: #000; /* Black color */
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-lg-6 col-md-8 col-sm-10" style="margin-left: 4em;">
+            <div class="card border-0 shadow">
+                <div class="card-body p-5" >
+                    <div class="text-center mb-4">
+                        <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+
+                        <dotlottie-player src="https://lottie.host/0295f991-955c-4ef1-a8f9-67fc91ca5e92/7q0ZcbV2v5.json" background="transparent" speed="1" style="width: 200px; height: 200px; margin: 0 auto;" loop autoplay></dotlottie-player>
+                    </div>
+                    <h3 class="card-title text-center mb-4">Create an Account</h3>
+                    <form action="/signup" method="POST">
+                        {% csrf_token %}
+                        {% if error %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                        {% endif %}
+                        <!-- Username -->
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" name="username" id="username" value="{{ values.username }}" class="form-control" placeholder="Enter Username">
+                        </div>
+                        <!-- First Name -->
+                        <div class="mb-3">
+                            <label for="firstname" class="form-label">First Name</label>
+                            <input type="text" name="firstname" id="firstname" value="{{ values.first_name }}" class="form-control" placeholder="Enter First Name">
+                        </div>
+                        <!-- Last Name -->
+                        <div class="mb-3">
+                            <label for="lastname" class="form-label">Last Name</label>
+                            <input type="text" name="lastname" id="lastname" value="{{ values.last_name }}" class="form-control" placeholder="Enter Last Name">
+                        </div>
+                        <!-- Phone -->
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="tel" name="phone" id="phone" class="form-control" value="{{ values.phone }}" placeholder="Enter Phone" pattern="[0-9]{10}">
+                        </div>
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input required type="email" name="email" id="email" value="{{ values.email }}" class="form-control" placeholder="Enter Email">
+                        </div>
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" name="password" id="password" class="form-control" placeholder="Enter Password">
+                        </div>
+                        <!-- Check me button -->
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-block">Create an Account</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
